@@ -10,9 +10,9 @@ export  function useDragHandle( time = '0.5s') {
   const height = useRef(0) 
   dom.style.opacity='0'  
   dom.setAttribute('id','dom_Drag')
+  dom.style.boxSizing = 'border-box'
 
   function dragStart(e:React.DragEvent<HTMLDivElement>) {
-  
     setIsDraggable(false);
     setIdGrag((e.target as HTMLDivElement).id);
     width.current = (e.target as HTMLDivElement).offsetWidth;
@@ -28,7 +28,8 @@ export  function useDragHandle( time = '0.5s') {
 
   function dragEnd (e:React.DragEvent<HTMLDivElement>) {
     (e.target  as HTMLDivElement).style.transition = 'none';
-    (e.target  as HTMLDivElement).style.opacity = '1';  
+    (e.target  as HTMLDivElement).style.opacity = '1'; 
+    (e.target  as HTMLDivElement).style.boxSizing = 'border-box';  
     (e.target  as HTMLDivElement).style.height = `${height.current}px`; 
     (e.target  as HTMLDivElement).style.width = `${width.current}px`;
     (dom as HTMLDivElement).remove();
