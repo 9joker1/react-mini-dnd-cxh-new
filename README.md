@@ -100,10 +100,11 @@ type indexdrag = number | string
 
 1. It's can be moved the "DropCard" of the same level. 
 2. Need to use TS.
-3. If 'space' is false or  default value, there must be no gap between     "DropCard" of the same level, otherwise an error will occur.
-4.You can use children's margin or padding  to create voids.
+3. If 'space' is false or  default value, there must be no gap between "DropCard" of the same level, otherwise an error will occur.You can use children's margin or padding  to create voids.
+4. DragContainer set up padding ,there be a gap between  browser toolbar and DropCard, otherwise it's an error when top element drag to Browser toolbar .
 
 只有同级的"DropCard"之间可以移动.
 需要使用TS.
 如果‘space’为 ‘flase’或者不传值,同级的"DropCard"之间必须无空隙 ,否则会出错。
 可以用children 的padding 和 margin 产生空隙。
+DragContainer 设置padding 与工具栏产生间接 ,可以避免顶部元素上拉拖住出错。

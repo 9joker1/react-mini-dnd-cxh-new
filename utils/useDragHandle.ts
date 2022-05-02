@@ -4,12 +4,12 @@ import {useSelect} from './useSelect'
 
 export  function useDragHandle( time = '0.5s') { 
   let dom = document.createElement('div')
-  const {selectDragOver,selectDrop} = useSelect (dom ,time)
+  const {selectDragOver,selectDrop} = useSelect (dom)
   const {setIdGrag,setIsDraggable} = useDrag()
   const width = useRef(0)
   const height = useRef(0) 
   dom.style.opacity='0'  
-  dom.setAttribute('id','dom_drag')
+  dom.setAttribute('id','dom_Drag')
 
   function dragStart(e:React.DragEvent<HTMLDivElement>) {
   

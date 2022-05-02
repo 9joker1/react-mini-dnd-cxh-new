@@ -9,7 +9,6 @@ interface DragS extends Omit<React.AllHTMLAttributes<HTMLDivElement>,'id'> {
   blankDisappearTime?:string,
 }
 export default function DragSource ({children,space = false,blankDisappearTime,...props}:DragS) {
- 
   const {dragOver,dragStart,dragEnd,darg,drop} = useDragHandle (blankDisappearTime)
   const {dragOverSpace,dropSpace,dragStartSpace,dragEndSpace,dargSpace} = useDragHandleSpace ( blankDisappearTime)  
   return ( 
