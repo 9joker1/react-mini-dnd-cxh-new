@@ -1,14 +1,14 @@
 ## Features
 Small memory,Multilayer Mobile,It is alike animation effect as
 'react-beautiful-dnd 、react-dnd'，More than 80% similarity.
-
+The size of the source code is smaller, only 15kb.
 Build using 'draggable' API.
 
 https://github.com/9joker1/react-mini-dnd-cxh-new.git 
 
 ##  Update
 
- Bug fixed
+ Better animation effects.
 ___________________________
 
  There be a gap between  Browser toolbar and DropCard, otherwise it's an error when top element drag to Browser toolbar .
@@ -86,11 +86,14 @@ type level = number
 2. "indexdrag": It must be different the values of "indexdrag" of the same "level" layer , such as "key".
 type indexdrag = number | string
 
-
 ### `warning`
 
 1. It's can be moved the "DropCard" of the same level. 
 2. parent of "DropCard"  must be "DropCard" or "DragContainer".
 3. If 'space' is false or  default value, there must be no gap between  "DropCard" of the same level, otherwise shake will occur,You can use children's margin or padding  to create voids.
-4. if these "DropCards" is children of  "DropCard" or "DragContainer",  these DropCards  must be a row or a column , otherwise shake will occur.
-5. DragContainer set up padding , otherwise it's an error when drag to Browser toolbar .
+4. DragContainer set up padding , otherwise it's an error when drag to Browser toolbar .
+5. if these "DropCards" is children of  "DropCard" or "DragContainer",  these DropCards  must be a row or a column , otherwise shake will occur
+
+
+
+
