@@ -28,7 +28,7 @@ export function useSelect(dom:HTMLDivElement) {
       for(let i = 0 ;i<s;i++){
         element.current = element.current?.parentNode
       };
-      if((element.current as HTMLDivElement ).id !== idGrag){   
+      if((element.current as HTMLDivElement ).id !== idGrag && element.current !== (document.getElementById(idGrag) as HTMLDivElement ).nextElementSibling){   
         isBlankDisappear.current = true
         element.current?.parentNode?.insertBefore(dom,element.current)
       } 
