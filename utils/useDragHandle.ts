@@ -1,53 +1,54 @@
-import React ,{useRef }from 'react'
+import React ,{useRef}from 'react'
 import { useDrag} from './context'
 import {useSelect} from './useSelect'
 
-export  function useDragHandle( time = '0.5s') { 
-  let dom = document.createElement('div')
-  const {selectDragOver,selectDrop} = useSelect (dom)
-  const {setIdGrag,setIsDraggable} = useDrag()
+export  function useDragHandle( time = '0.5s') {
+  const {setIdGrag,setIsDraggable,isBlankDisappear} = useDrag()
   const width = useRef(0)
-  const height = useRef(0) 
+  const height = useRef(0)
+  let dom = document.createElement('div')
+  const {selectDragOver,selectDrop} = useSelect (dom )
+
   dom.style.opacity='0'  
   dom.setAttribute('id','dom_Drag')
-  dom.style.boxSizing = 'border-box'
-
+  dom.style.boxSizing = 'border-box';
   function dragStart(e:React.DragEvent<HTMLDivElement>) {
     setIsDraggable(false);
     setIdGrag((e.target as HTMLDivElement).id);
     width.current = (e.target as HTMLDivElement).offsetWidth;
-    height.current = (e.target as HTMLDivElement).offsetHeight;   
+    height.current = (e.target as HTMLDivElement).offsetHeight; 
   }
-  
   function darg (e:React.DragEvent<HTMLDivElement>) {
-    (e.target  as HTMLDivElement).style.opacity = '0';  
-    (e.target  as HTMLDivElement).style.transition = `height ${time} ,width ${time}`;
-    (e.target  as HTMLDivElement).style.height = '0';
-    (e.target  as HTMLDivElement).style.width = '0';
+    console.log('darg',isBlankDisappear.current);
+    (e.target  as HTMLDivElement).style.opacity = '0'; 
+     
+    if(isBlankDisappear.current){
+      (e.target  as HTMLDivElement).style.transition = `height ${time} ,width ${time}`;
+      (e.target  as HTMLDivElement).style.height = '0';
+      (e.target  as HTMLDivElement).style.width = '0';
+    }
   }
-
   function dragEnd (e:React.DragEvent<HTMLDivElement>) {
+    isBlankDisappear.current = false;
     (e.target  as HTMLDivElement).style.transition = 'none';
-    (e.target  as HTMLDivElement).style.opacity = '1'; 
-    (e.target  as HTMLDivElement).style.boxSizing = 'border-box';  
+    (e.target  as HTMLDivElement).style.opacity = '1';  
+    (e.target  as HTMLDivElement).style.boxSizing = 'border-box';
     (e.target  as HTMLDivElement).style.height = `${height.current}px`; 
     (e.target  as HTMLDivElement).style.width = `${width.current}px`;
     (dom as HTMLDivElement).remove();
     setIsDraggable(true);
-    setIdGrag('')
-  } 
-
+    setIdGrag('');
+  }  
   function dragOver (e:React.DragEvent<HTMLDivElement>) {
     dom.style.height = `${height.current}px`
     dom.style.width = `${width.current}px`
-    e.preventDefault();  
-    selectDragOver( (e.target) as HTMLDivElement)
+    e.preventDefault(); 
+    selectDragOver((e.target) as HTMLDivElement)
+   console.log('dragOver',((e.target) as HTMLDivElement).id);
   } 
-
-  function drop(e:React.DragEvent<HTMLDivElement>) { 
-    selectDrop((e.target) as HTMLDivElement)    
+  function drop(e:React.DragEvent<HTMLDivElement>){ 
+    selectDrop((e.target) as HTMLDivElement) 
   }
-
   return {    
     dragOver,
     drop,

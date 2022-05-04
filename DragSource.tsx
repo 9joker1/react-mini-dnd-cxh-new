@@ -12,7 +12,7 @@ export default function DragSource ({children,space = false,blankDisappearTime,.
   const {dragOver,dragStart,dragEnd,darg,drop} = useDragHandle (blankDisappearTime)
   const {dragOverSpace,dropSpace,dragStartSpace,dragEndSpace,dargSpace} = useDragHandleSpace ( blankDisappearTime)  
   return ( 
-    <div id='drag=0' {...props} 
+    <div id='drag_=0' {...props} 
       onDragOver={space ? dragOverSpace: dragOver}
       onDrag={space ? dargSpace:darg} 
       onDragStart={space ?dragStartSpace: dragStart} 

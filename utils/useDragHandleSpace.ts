@@ -33,16 +33,15 @@ export  function useDragHandleSpace( time = '0.5s') {
     setIdGrag('')
   }  
   function dragOverSpace (e:React.DragEvent<HTMLDivElement>) {
-    e.preventDefault();    
+    e.preventDefault();  
+     
   } 
-  
   function dropSpace(e:React.DragEvent<HTMLDivElement>) { 
     let lenT = (e.target as HTMLDivElement).id.split('_').length ;
     let s = lenT - len;
     let element = e.target as (Node & ParentNode) | null | undefined
     let node = e.target as any  
-     //No darg type ID element judgment
-    // 没有darg类型ID元素判断
+    
     if(!dargExg.test((e.target as HTMLDivElement).id)){
       while (!dargExg.test(node?.id)){
        node = node?.parentNode
@@ -50,17 +49,12 @@ export  function useDragHandleSpace( time = '0.5s') {
       if (!dragSonIdExg.test(node?.id)) return  
       node.parentNode.insertBefore(document.getElementById(idGrag)!,node);
     }
-    
-    // /Element judgment at the same level or below     
-    // 同级或以下级元素判断
     if(dragSonIdExg.test((e.target as HTMLDivElement).id)){
       for(let i = 0 ;i<s;i++){
         element = element?.parentNode
       }; 
       (element?.parentNode!).insertBefore(document.getElementById(idGrag)!,element!)
     }
-    //Judgment of elements above the parent level
-    // 父级元素判断
     if(dragParentsIdExg.test((e.target as HTMLDivElement).id)) {
       (e.target as HTMLDivElement).appendChild(document.getElementById(idGrag)!); 
     }

@@ -2,23 +2,20 @@ import {useRef }from 'react'
 import { useDrag} from './context'
 
 export function useSelect(dom:HTMLDivElement) {
-  const {idGrag} = useDrag()
-  let dragSonId = idGrag.split('=').slice(0,-1).join('_') 
-  let dragParentsId = idGrag.split('_').slice(0,-1).join('_') 
+  const {idGrag,isBlankDisappear} = useDrag()
+  let [dragSonId] = idGrag.split('=').slice(0,-1)
+  let dragParentsId = idGrag.split('_').slice(0,-2).join('_') 
   let dragSonIdExg = new RegExp(`^${dragSonId}`)
-  let dragParentsIdExg = new RegExp(`^${dragParentsId}=\\w{1,}$`)
-  let dargExg = /(drag){1,}/
-  let length = idGrag.split('_').length 
-  let dragAncestorsIdExg = new RegExp(`(drag){1,${length > 1 ? length-1 : 1}}`)
-  
+  let dragParentsIdExg = new RegExp(`^${dragParentsId}_=\\w{1,}$`)
+  let length = idGrag.split('_').length-1
+  let dargExg = /(drag_){1,}/;
+  let dragAncestorsIdExg = new RegExp(`^(drag_){1,${length-1>1 ? length-1 : 1}}$`);
   const element = useRef<(Node & ParentNode) | null | undefined>(null) 
-
-  const selectDragOver =(ele: (Node & ParentNode) | null | undefined):any=>{
+  const selectDragOver =(ele: (Node & ParentNode) | null | undefined)=>{
     element.current = ele
-    let lenT = (ele as HTMLDivElement).id.split('_').length 
-    let s = lenT - length
-    //No darg type ID element judgment
-    // 没有darg类型ID元素判断
+    let lenT = (ele as HTMLDivElement).id.split('_').length - 1 ;
+    let s = lenT - length;
+    let [dragAncestorsId] = (ele as HTMLDivElement).id.split('=').slice(0,-1) 
     if((ele as HTMLDivElement).id !== 'dom_Drag'){
       if(!dargExg.test((ele as HTMLDivElement).id)){   
         while (!dargExg.test((element.current as HTMLDivElement)?.id)){
@@ -27,54 +24,50 @@ export function useSelect(dom:HTMLDivElement) {
         selectDragOver(element.current)        
       } 
     }
-    //Element judgment at the same level or below  
-    // 同级或以下级元素判断
     if(dragSonIdExg.test((ele as HTMLDivElement).id)){
       for(let i = 0 ;i<s;i++){
         element.current = element.current?.parentNode
       };
-      return element.current?.parentNode?.insertBefore(dom,element.current);
-    }   
-    //Judgment of elements above the parent level
-    // 父级以上元素判断
-    if(dragAncestorsIdExg.test((ele as HTMLDivElement).id)) {
+      if((element.current as HTMLDivElement ).id !== idGrag){   
+        isBlankDisappear.current = true
+        element.current?.parentNode?.insertBefore(dom,element.current)
+      } 
+    }
+    if(dragAncestorsIdExg.test(dragAncestorsId)) {
+      isBlankDisappear.current = true;
       (ele as HTMLDivElement).appendChild(dom) 
-      dom.style.height='0'
-      dom.style.width='0'                
+      dom.style.height='0';
+      dom.style.width='0' ;         
     }
   }
-
   const selectDrop =(ele: (Node & ParentNode) | null | undefined) => {
     element.current = ele
-    let lenT = (ele as HTMLDivElement).id.split('_').length ;
-    let s = lenT - length;
-     //No darg type ID element judgment
-    // 没有darg类型ID元素判断
+    let lenT = (ele as HTMLDivElement).id.split('_').length - 1 ;
+    let s = lenT - length ;
     if(!dargExg.test((ele as HTMLDivElement).id)){   
       while (!dargExg.test((element.current as HTMLDivElement)?.id)){
         element.current = element.current?.parentNode
-      }    
-      selectDrop(element.current)       
+      } 
+      selectDrop(element.current)      
     }  
-     //Element judgment at the same level or below  
-    // 同级或以下级元素判断
     if(dragSonIdExg.test((ele as HTMLDivElement).id)){
       for(let i = 0 ;i<s;i++){
         element.current = element.current?.parentNode
       };
-      element.current?.parentNode?.insertBefore(document.getElementById(idGrag)! ,element.current)
-    }   
-    //Judgment of elements above the parent level
-    // 父级元素判断
+      if(!(element.current as HTMLDivElement).previousElementSibling){
+        element.current?.parentNode?.insertBefore(document.getElementById(idGrag)!,element.current)
+      }else{
+        element.current?.parentNode?.insertBefore(document.getElementById(idGrag)!,(element.current as HTMLDivElement).nextElementSibling);
+      } 
+    } 
     if(dragParentsIdExg.test((ele as HTMLDivElement).id)) {
       (ele as HTMLDivElement).appendChild(document.getElementById(idGrag)!);             
     }
-    //Judgment of blank
     if((ele as HTMLDivElement).id ==='dom_Drag'){ 
       if((ele as HTMLDivElement).nextElementSibling){
         (ele as HTMLDivElement).parentNode?.insertBefore(document.getElementById(idGrag)!,(ele as HTMLDivElement))
       }else{
-        (ele as HTMLDivElement).appendChild(document.getElementById(idGrag)!)
+        (ele as HTMLDivElement).appendChild(document.getElementById(idGrag)!) 
       }
     }
   }
