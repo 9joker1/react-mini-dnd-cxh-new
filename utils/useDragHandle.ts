@@ -19,7 +19,6 @@ export  function useDragHandle( time = '0.5s') {
     height.current = (e.target as HTMLDivElement).offsetHeight; 
   }
   function darg (e:React.DragEvent<HTMLDivElement>) {
-    console.log('darg',isBlankDisappear.current);
     (e.target  as HTMLDivElement).style.opacity = '0'; 
      
     if(isBlankDisappear.current){
@@ -44,7 +43,6 @@ export  function useDragHandle( time = '0.5s') {
     dom.style.width = `${width.current}px`
     e.preventDefault(); 
     selectDragOver((e.target) as HTMLDivElement)
-   console.log('dragOver',((e.target) as HTMLDivElement).id);
   } 
   function drop(e:React.DragEvent<HTMLDivElement>){ 
     selectDrop((e.target) as HTMLDivElement) 
