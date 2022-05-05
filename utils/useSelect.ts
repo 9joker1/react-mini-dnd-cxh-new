@@ -6,7 +6,7 @@ export function useSelect(dom:HTMLDivElement) {
   let [dragSonId] = idGrag.split('=').slice(0,-1)
   let dragParentsId = idGrag.split('_').slice(0,-2).join('_') 
   let dragSonIdExg = new RegExp(`^${dragSonId}`)
-  let dragParentsIdExg = new RegExp(`^${dragParentsId}_=[\\w\\W]$`)
+  let dragParentsIdExg = new RegExp(`^${dragParentsId}_=[\\w\\W]*$`)
   let length = idGrag.split('_').length-1
   let dargExg = /(drag_){1,}/;
   let dragAncestorsIdExg = new RegExp(`^(drag_){1,${length-1>1 ? length-1 : 1}}$`);
