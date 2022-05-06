@@ -1,7 +1,7 @@
 ## Features
-Small memory,Multilayer Mobile,It is alike animation effect as
-'react-beautiful-dnd 、react-dnd'，More than 80% similarity.
-The size of the source code is smaller, only 15kb.
+Easy to use,Small memory,Multilayer Mobile,It's alike animation effect as
+'react-beautiful-dnd 、react-dnd',It's Approach 80% similarity.
+The size of the source code is smaller, only 17kb.
 Build using 'draggable' API.
 
 https://github.com/9joker1/react-mini-dnd-cxh-new.git 
