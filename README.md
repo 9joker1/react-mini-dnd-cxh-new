@@ -8,11 +8,8 @@ https://github.com/9joker1/react-mini-dnd-cxh-new.git
 
 ##  Update
 
- Better animation effects.
-___________________________
-
- There be a gap between  Browser toolbar and DropCard, otherwise it's an error when top element drag to Browser toolbar .
- DragContainer should set up padding .
+Optimization.
+Bug is fixed.
 
 ##  Install
 
@@ -91,8 +88,8 @@ type indexdrag = number | string
 1. It's can be moved the "DropCard" of the same level. 
 2. parent of "DropCard"  must be "DropCard" or "DragContainer".
 3. If 'space' is false or  default value, there must be no gap between  "DropCard" of the same level, otherwise shake will occur,You can use children's margin or padding  to create voids.
-4. DragContainer set up padding , otherwise it's an error when drag to Browser toolbar .
-5. if these "DropCards" is children of  "DropCard" or "DragContainer",  these DropCards  must be a row or a column , otherwise shake will occur
+4. if these "DropCards" is children of  "DropCard" or "DragContainer",  these DropCards  must be a row or a column , otherwise shake will occur .
+5. There be a gap between Browser toolbar and DropCard, otherwise it's an error when top element drag to Browser toolbar, DragContainer should set up padding .
 
 
 
