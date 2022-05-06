@@ -11,7 +11,9 @@ export function useSelect(dom:HTMLDivElement) {
   let dargExg = /(drag_){1,}/;
   let dragAncestorsIdExg = new RegExp(`^(drag_){1,${length-1>1 ? length-1 : 1}}$`);
   const element = useRef<(Node & ParentNode) | null | undefined>(null) 
-  const selectDragOver =(ele: (Node & ParentNode) | null | undefined)=>{
+  const element2 = useRef<(Node & ParentNode) | null | undefined>(null) 
+  
+  const selectDragEnter =(ele: (Node & ParentNode) | null | undefined)=>{
     element.current = ele
     let lenT = (ele as HTMLDivElement).id.split('_').length - 1 ;
     let s = lenT - length;
@@ -21,14 +23,14 @@ export function useSelect(dom:HTMLDivElement) {
         while (!dargExg.test((element.current as HTMLDivElement)?.id)){
           element.current = element.current?.parentNode
         } 
-        selectDragOver(element.current)        
+        selectDragEnter(element.current)        
       } 
     }
     if(dragSonIdExg.test((ele as HTMLDivElement).id)){
       for(let i = 0 ;i<s;i++){
         element.current = element.current?.parentNode
       };
-      if((element.current as HTMLDivElement ).id !== idGrag && element.current !== (document.getElementById(idGrag) as HTMLDivElement ).nextElementSibling){   
+      if((element.current as HTMLDivElement ).id !== idGrag && element.current !== (document.getElementById(idGrag) as HTMLDivElement ).nextElementSibling ){   
         isBlankDisappear.current = true
         element.current?.parentNode?.insertBefore(dom,element.current)
       } 
@@ -71,9 +73,32 @@ export function useSelect(dom:HTMLDivElement) {
       }
     }
   }
-  return {
-    selectDragOver,
-    selectDrop
+   // (fix bug)
+  //Top element darg up 
+  const selectDragLeave =(ele: (Node & ParentNode) | null | undefined)=>{
+    element2.current = ele
+    let lenT = (ele as HTMLDivElement).id.split('_').length - 1 ;
+    let s = lenT - length;
+    if((ele as HTMLDivElement).id !== 'dom_Drag'){
+      if(!dargExg.test((ele as HTMLDivElement).id)){   
+        while (!dargExg.test((element2.current as HTMLDivElement)?.id)){
+          element2.current = element2.current?.parentNode
+        } 
+        selectDragLeave(element2.current)        
+      } 
+    }
+    if(dragSonIdExg.test((ele as HTMLDivElement).id)){
+      for(let i = 0 ;i<s;i++){
+        element2.current = element2.current?.parentNode
+      };
+      if((element2.current as HTMLDivElement ).id === idGrag){   
+        isBlankDisappear.current = true
+      } 
+    }
   }
-   
+  return {
+    selectDragEnter,
+    selectDrop,
+    selectDragLeave
+  }  
 }

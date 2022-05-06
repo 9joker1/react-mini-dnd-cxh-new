@@ -4,12 +4,12 @@ import { useDrag} from './context'
 export  function useDragHandleSpace( time = '0.5s') {
   const {idGrag} = useDrag()
   const {setIdGrag,setIsDraggable} = useDrag()
-  let dragSonId = idGrag.split('=').slice(0,-1).join('_') 
-  let dragParentsId = idGrag.split('_').slice(0,-1).join('_') 
+  let [dragSonId] = idGrag.split('=').slice(0,-1)
+  let dragParentsId = idGrag.split('_').slice(0,-2).join('_') 
   let dragSonIdExg = new RegExp(`^${dragSonId}`)
-  let dragParentsIdExg = new RegExp(`^${dragParentsId}=\\w{1,}$`)
-  let dargExg = /(drag){1,}/
-  let len = idGrag.split('_').length ;
+  let dragParentsIdExg = new RegExp(`^${dragParentsId}_=[\\w\\W]*$`)
+  let length = idGrag.split('_').length-1
+  let dargExg = /(drag_){1,}/;
   const width = useRef(0)
   const height = useRef(0)
   
@@ -27,6 +27,7 @@ export  function useDragHandleSpace( time = '0.5s') {
   function dragEndSpace (e:React.DragEvent<HTMLDivElement>) {
     (e.target  as HTMLDivElement).style.transition = 'none';
     (e.target  as HTMLDivElement).style.opacity = '1';  
+    (e.target  as HTMLDivElement).style.boxSizing = 'border-box';
     (e.target  as HTMLDivElement).style.height = `${height.current}px`; 
     (e.target  as HTMLDivElement).style.width = `${width.current}px`;
     setIsDraggable(true);
@@ -34,27 +35,25 @@ export  function useDragHandleSpace( time = '0.5s') {
   }  
   function dragOverSpace (e:React.DragEvent<HTMLDivElement>) {
     e.preventDefault();  
-     
-  } 
+  };
   function dropSpace(e:React.DragEvent<HTMLDivElement>) { 
-    let lenT = (e.target as HTMLDivElement).id.split('_').length ;
-    let s = lenT - len;
+    let lenT = (e.target as HTMLDivElement).id.split('_').length-1 ;
+    let s = lenT - length;
     let element = e.target as (Node & ParentNode) | null | undefined
-    let node = e.target as any  
-    
+    let node = e.target as any  ;
     if(!dargExg.test((e.target as HTMLDivElement).id)){
       while (!dargExg.test(node?.id)){
        node = node?.parentNode
       }
       if (!dragSonIdExg.test(node?.id)) return  
       node.parentNode.insertBefore(document.getElementById(idGrag)!,node);
-    }
+    };
     if(dragSonIdExg.test((e.target as HTMLDivElement).id)){
       for(let i = 0 ;i<s;i++){
         element = element?.parentNode
       }; 
-      (element?.parentNode!).insertBefore(document.getElementById(idGrag)!,element!)
-    }
+      element?.parentNode?.insertBefore(document.getElementById(idGrag)!,element)
+    };
     if(dragParentsIdExg.test((e.target as HTMLDivElement).id)) {
       (e.target as HTMLDivElement).appendChild(document.getElementById(idGrag)!); 
     }
